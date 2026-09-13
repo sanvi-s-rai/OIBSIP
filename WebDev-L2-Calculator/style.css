@@ -1,0 +1,111 @@
+body {
+    margin: 0;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.iphone-container {
+    position: relative;
+    width: 360px;
+    height: 670px;
+    background-color: black;
+    border-radius: 40px;
+    border: 3px solid gray;
+    overflow: hidden;
+}
+
+/* Calculator Section */
+.calculator {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+/* Display */
+.display {
+    background-color: black;
+    color: white;
+    text-align: right;
+    padding: 20px 10px;
+    border-radius: 10px;
+    height: 90px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+/* Expression shown above the result */
+.expression {
+    color: #b0b0b0;
+    font-size: 1.1rem;
+    min-height: 25px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Result shown below */
+.result {
+    color: white;
+    font-size: 2.8rem;
+    line-height: 1;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Button Grid */
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* All Buttons */
+.btn {
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.7rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    opacity: 0.8;
+}
+
+/* Orange Buttons */
+.btn.orange {
+    background-color: #ff9500;
+    color: white;
+}
+
+/* Light Buttons */
+.btn.light {
+    background-color: #a5a5a5;
+    color: black;
+}
+
+/* Number Buttons */
+.btn.dark {
+    background-color: #505050;
+    color: white;
+}
+
+/* Wide Zero Button */
+.btn.wide {
+    grid-column: span 2;
+    width: 100%;
+    border-radius: 35px;
+}
