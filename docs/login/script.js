@@ -1,7 +1,9 @@
 // Navigation & View Protection
 function showTab(tabName) {
   hideAlert();
-  const currentSession = JSON.parse(sessionStorage.getItem('activeUser') || 'null');
+  const currentSession = JSON.parse(
+    sessionStorage.getItem('activeUser') || 'null'
+  );
 
   // Restrict dashboard access if unauthenticated
   if (tabName === 'dashboard' && !currentSession) {
@@ -48,6 +50,19 @@ function hideAlert() {
 
   alert.className = 'alert';
   alert.textContent = '';
+}
+
+// Show / Hide Password
+function togglePassword(inputId, button) {
+  const input = document.getElementById(inputId);
+
+  if (input.type === 'password') {
+    input.type = 'text';
+    button.textContent = 'Hide';
+  } else {
+    input.type = 'password';
+    button.textContent = 'Show';
+  }
 }
 
 // Registration Handler
