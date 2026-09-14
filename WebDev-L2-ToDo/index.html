@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mindful Tasks & Habit Planner</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient Golden Caramel Glow Orbs -->
+  <div class="glow-orb glow-top-left"></div>
+  <div class="glow-orb glow-bottom-right"></div>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header class="top-bar">
+      <div class="brand">
+        <h1>☕ Daily Task & Habit Sanctuary</h1>
+        <p id="dateHeader">Loading current date...</p>
+      </div>
+
+      <div class="status-pills">
+        <div class="pill">
+          <span>Pending:</span>
+          <span id="statPendingCount" class="pill-num" style="color: var(--accent-brown);">0</span>
+        </div>
+
+        <div class="pill">
+          <span>Right (✓):</span>
+          <span id="statRightCount" class="pill-num" style="color: var(--green-primary);">0</span>
+        </div>
+
+        <div class="pill">
+          <span>Wrong (✕):</span>
+          <span id="statWrongCount" class="pill-num" style="color: var(--red-wrong);">0</span>
+        </div>
+
+        <div class="pill">
+          <span>Water:</span>
+          <span id="statWaterCount" class="pill-num" style="color: var(--green-primary);">0/8</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Grid -->
+    <div class="app-grid">
+
+      <!-- Left Column: Task Lists -->
+      <main class="card">
+        <h2 class="card-title">✦ Add New Task</h2>
+
+        <form class="task-form" onsubmit="handleCreateTask(event)">
+          <div class="input-field">
+            <label for="inputDesc">Task Description *</label>
+            <input type="text" id="inputDesc" placeholder="e.g. Complete chemistry assignment" required autocomplete="off">
+          </div>
+
+          <div class="input-field">
+            <label for="inputDate">Due Date</label>
+            <input type="date" id="inputDate">
+          </div>
+
+          <div class="input-field">
+            <label for="inputTime">Due Time</label>
+            <input type="time" id="inputTime">
+          </div>
+
+          <button type="submit" class="btn-submit">+ Add Task</button>
+        </form>
+
+        <!-- 1. PENDING TASKS SECTION -->
+        <div class="section-bar">
+          <div class="section-name">
+            <span>Pending Tasks</span>
+            <span id="badgePending" class="badge-counter badge-pending">0 pending</span>
+          </div>
+        </div>
+
+        <table class="task-table" id="pendingTable">
+          <thead>
+            <tr>
+              <th class="col-tick">Mark (✓ / ✕)</th>
+              <th class="col-desc">Task Description</th>
+              <th class="col-date">Date</th>
+              <th class="col-time">Time</th>
+              <th class="col-actions">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody id="pendingTbody">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+
+        <div id="pendingEmptyNotice" class="empty-card" style="display: none;">
+          All caught up! No pending tasks right now.
+        </div>
+
+        <!-- 2. COMPLETED TASKS (MARKED RIGHT ✓) -->
+        <div class="section-bar" style="margin-top: 36px;">
+          <div class="section-name">
+            <span style="color: var(--green-primary);">Completed Tasks (Right ✓)</span>
+            <span id="badgeRight" class="badge-counter badge-completed">0 completed</span>
+          </div>
+
+          <button type="button" class="btn-action" style="color: var(--text-muted);" onclick="clearCompletedRight()">
+            Clear Completed
+          </button>
+        </div>
+
+        <table class="task-table" id="rightTable">
+          <thead>
+            <tr>
+              <th class="col-tick">Status</th>
+              <th class="col-desc">Task Description</th>
+              <th class="col-date">Date</th>
+              <th class="col-time">Time</th>
+              <th class="col-actions">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody id="rightTbody">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+
+        <div id="rightEmptyNotice" class="empty-card" style="display: none;">
+          No completed tasks yet. Tick ✓ on a task to complete it!
+        </div>
+
+        <!-- 3. MISSED / INCOMPLETE TASKS (MARKED WRONG ✕) -->
+        <div class="section-bar" style="margin-top: 36px;">
+          <div class="section-name">
+            <span style="color: var(--red-wrong);">Missed / Incomplete Tasks (Wrong ✕)</span>
+            <span id="badgeWrong" class="badge-counter badge-wrong">0 missed</span>
+          </div>
+
+          <button type="button" class="btn-action" style="color: var(--text-muted);" onclick="clearMarkedWrong()">
+            Clear Missed
+          </button>
+        </div>
+
+        <table class="task-table" id="wrongTable">
+          <thead>
+            <tr>
+              <th class="col-tick">Status</th>
+              <th class="col-desc">Task Description</th>
+              <th class="col-date">Date</th>
+              <th class="col-time">Time</th>
+              <th class="col-actions">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody id="wrongTbody">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+
+        <div id="wrongEmptyNotice" class="empty-card" style="display: none;">
+          No missed tasks. Keep up the great work!
+        </div>
+      </main>
+
+      <!-- Right Column: Incomplete Reminder, Water Tracker & Notes -->
+      <aside class="card">
+
+        <!-- Incomplete Task Reminder Panel -->
+        <div class="widget-box">
+          <h2 class="card-title">🔔 Incomplete Task Reminder</h2>
+
+          <div class="reminder-panel">
+            <div class="reminder-header">
+              <span style="font-size: 13px; font-weight: 700; color: var(--text-mocha);">
+                Pending / Wrong Tasks:
+              </span>
+
+              <span id="pendingAlertPill" class="pending-alert-badge">
+                0 Unfinished
+              </span>
+            </div>
+
+            <div class="reminder-controls">
+
+              <div class="reminder-row">
+                <span>Remind me when incomplete:</span>
+
+                <input
+                  type="checkbox"
+                  id="incompleteReminderToggle"
+                  style="accent-color: var(--accent-brown); cursor: pointer;"
+                  checked
+                  onchange="toggleIncompleteReminder()"
+                >
+              </div>
+
+              <div class="reminder-row">
+                <span>Check Frequency:</span>
+
+                <select
+                  id="reminderIntervalSelect"
+                  style="width: auto; padding: 4px 8px; font-size: 12px;"
+                  onchange="updateReminderFrequency()"
+                >
+                  <option value="10">Every 10 mins</option>
+                  <option value="20" selected>Every 20 mins</option>
+                  <option value="30">Every 30 mins</option>
+                  <option value="60">Every 1 hour</option>
+                </select>
+              </div>
+
+              <div class="reminder-row" style="margin-top: 6px;">
+                <span style="font-size: 11.5px; color: var(--text-muted);">
+                  Preview alert & chime:
+                </span>
+
+                <button
+                  type="button"
+                  class="btn-test-reminder"
+                  onclick="fireIncompleteTaskReminder(true)"
+                >
+                  🔔 Test Reminder
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Drinking Water Tracker -->
+        <div class="widget-box">
+          <h2 class="card-title">💧 Drinking Water Reminder</h2>
+
+          <div class="water-box">
+
+            <div class="water-header-row">
+              <div>
+                <span class="water-count-large" id="waterNumber">0</span>
+
+                <span style="color: var(--text-muted); font-size: 13px; font-weight: 700;">
+                  / 8 glasses
+                </span>
+              </div>
+
+              <span
+                id="waterFeedback"
+                style="font-size: 11.5px; color: var(--green-primary); font-weight: 700;"
+              >
+                Stay hydrated!
+              </span>
+            </div>
+
+            <div class="water-icons-row" id="waterIconsContainer">
+              <!-- Injected via JS -->
+            </div>
+
+            <div class="water-buttons">
+              <button
+                type="button"
+                class="btn-water btn-drink-water"
+                onclick="logWaterGlass()"
+              >
+                + Log 1 Glass
+              </button>
+
+              <button
+                type="button"
+                class="btn-water btn-reset-water"
+                onclick="resetWaterTracker()"
+              >
+                Reset
+              </button>
+            </div>
+
+            <div
+              style="
+                margin-top: 12px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 12px;
+                color: var(--text-muted);
+                font-weight: 600;
+              "
+            >
+              <span>Hourly Water Chime</span>
+
+              <input
+                type="checkbox"
+                id="waterChimeToggle"
+                style="accent-color: var(--green-primary); cursor: pointer;"
+                checked
+                onchange="toggleWaterChime()"
+              >
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Notes Scratchpad -->
+        <div class="widget-box">
+          <h2 class="card-title">📝 Notes & Reminders</h2>
+
+          <textarea
+            id="notesArea"
+            class="notes-input"
+            placeholder="Jot down quick reminders, meeting notes, or ideas here... Everything saves automatically."
+            oninput="saveNotesText()"
+          ></textarea>
+
+          <div class="notes-info">
+            <span>Auto-saved in localStorage</span>
+            <span id="notesCharCounter">0 chars</span>
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+
+  <div id="toastTray" class="toast-tray"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
