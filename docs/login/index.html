@@ -7,7 +7,6 @@
 
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
   <!-- Ambient Glow Effects -->
@@ -36,8 +35,17 @@
 
         <div class="form-group">
           <label for="regPassword">Password</label>
-          <input type="password" id="regPassword" placeholder="••••••••" required autocomplete="new-password">
-          <span class="field-hint">Must be at least 8 characters long with at least 1 number.</span>
+
+          <div class="password-container">
+            <input type="password" id="regPassword" placeholder="••••••••" required autocomplete="new-password">
+            <button type="button" class="show-password" onclick="togglePassword('regPassword', this)">
+              Show
+            </button>
+          </div>
+
+          <span class="field-hint">
+            Must be at least 8 characters long with at least 1 number.
+          </span>
         </div>
 
         <button type="submit" class="btn">Register</button>
@@ -57,7 +65,13 @@
 
         <div class="form-group">
           <label for="loginPassword">Password</label>
-          <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
+
+          <div class="password-container">
+            <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
+            <button type="button" class="show-password" onclick="togglePassword('loginPassword', this)">
+              Show
+            </button>
+          </div>
         </div>
 
         <button type="submit" class="btn">Login</button>
@@ -67,7 +81,9 @@
     <!-- 3. Protected Dashboard View -->
     <div id="dashboardSection" style="display: none;">
       <h2>Protected Space</h2>
-      <p class="subtitle">You have successfully authenticated into the protected view.</p>
+      <p class="subtitle">
+        You have successfully authenticated into the protected view.
+      </p>
 
       <div class="profile-card">
         <div class="profile-row">
@@ -86,7 +102,9 @@
         </div>
       </div>
 
-      <button type="button" class="btn btn-danger" onclick="handleLogout()">Log Out</button>
+      <button type="button" class="btn btn-danger" onclick="handleLogout()">
+        Log Out
+      </button>
     </div>
   </div>
 
