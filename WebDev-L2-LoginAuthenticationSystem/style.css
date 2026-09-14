@@ -123,6 +123,8 @@ label {
 }
 
 input[type="text"],
+input[type="password"],
+input[type="text"],
 input[type="password"] {
   width: 100%;
   padding: 11px 14px;
@@ -151,6 +153,34 @@ input:focus {
   color: #94a3b8;
   margin-top: 6px;
   line-height: 1.35;
+}
+
+/* Password Show/Hide */
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-container input {
+  padding-right: 60px;
+}
+
+.show-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #818cf8;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.show-password:hover {
+  color: #a5b4fc;
 }
 
 /* Action Buttons */
@@ -255,7 +285,7 @@ input:focus {
   display: inline-block;
   padding: 2px 8px;
   background: rgba(34, 197, 94, 0.15);
-  border: 1px solid rgba(34, 197, 94, 0.3);
+  border: 1px solid rgba(34, 197, 0.3);
   color: #86efac;
   border-radius: 20px;
   font-size: 11.5px;
